@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         arrayTKB = new ArrayList<>();
         addTkb = (EditText) findViewById(R.id.editTextTKB);
         create = (Button) findViewById(R.id.button_createTKB);
-        arrayTKB.add("Học kì 1");
+        arrayTKB.add("Học kì 1 - Năm 1");
         ArrayAdapter adapterTKB= new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1,arrayTKB);
         tkb.setAdapter(adapterTKB);
         create.setOnClickListener(new View.OnClickListener() {
