@@ -1,6 +1,8 @@
 package com.example.note;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +54,10 @@ public class AdapterHinhAnh extends BaseAdapter {
         HinhAnh hinhAnh = arrayHinhAnh.get(position);
         txtChitiet.setText(hinhAnh.getChitiet());
         txtNgayChup.setText(hinhAnh.getNgaychup());
-        imgImage.setImageBitmap(hinhAnh.getImage());
+
+        byte[] hinhanh = hinhAnh.getImage();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(hinhanh,0,hinhanh.length);
+        imgImage.setImageBitmap(bitmap);
 
         return convertView;
     }

@@ -24,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> arrayTKB;
     EditText addTkb;
     Button create;
-
     TextView textView;
+    public static DatabaseMonHoc databaseMonHoc;
+    public static DatabaseHinhAnh databaseHinhAnh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
         arrayTKB.add("Học kì 1 - Năm 1");
         ArrayAdapter adapterTKB= new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1,arrayTKB);
         tkb.setAdapter(adapterTKB);
+        databaseMonHoc = new DatabaseMonHoc(this,"QuanliMon.sqlite",null,1);
+        databaseMonHoc.QueryData("CREATE TABLE IF NOT EXISTS MonHoc(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenTKB VARCHAR(50),thu VARCHAR(20),tenmon VARCHAR(50))");
+
+        databaseHinhAnh = new DatabaseHinhAnh(this,"QuanliHinh,sqlite",null,1);
+        databaseHinhAnh.QueryData("CREATE TABLE IF NOT EXISTS HinhAnh(Id INTEGER PRIMARY KEY AUTOINCREMENT, ghichu VARCHAR(100), hinhanh BLOG)");
+
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

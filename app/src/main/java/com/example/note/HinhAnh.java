@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 public class HinhAnh {
     private String chitiet;
     private String ngaychup;
-    private Bitmap image;
+    private byte[] image;
 
-    public HinhAnh(String chitiet, String ngaychup, Bitmap image) {
+    public HinhAnh(String chitiet, String ngaychup, byte[] image) {
         this.chitiet = chitiet;
         this.ngaychup = ngaychup;
         this.image = image;
@@ -29,11 +29,11 @@ public class HinhAnh {
         this.ngaychup = ngaychup;
     }
 
-    public Bitmap getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 }

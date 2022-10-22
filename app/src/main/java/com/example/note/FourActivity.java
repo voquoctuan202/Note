@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -108,7 +109,11 @@ public class FourActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            arrayHinhanh.add(new HinhAnh(" ",DayNow(), bitmap));
+            //chuyen bitmap sang byte[]
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream(); // khoi tao bien byteArray de luu anh keu byte[]
+            bitmap.compress(Bitmap.CompressFormat.PNG,100 /*so cang nho cang chat luong*/,byteArray); // chuyen doi kieu tu bitmap sang kieu byte[] dong thoi gan cho byteArray
+            byte[] hinhanh = byteArray.toByteArray(); //chuyen du lieu sang file hinh anh
+            arrayHinhanh.add(new HinhAnh(" ",DayNow(), hinhanh));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
