@@ -3,6 +3,7 @@ package com.example.note;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,8 @@ public class ThirdActivity extends AppCompatActivity {
     EditText editADD;
     ListView listView;
     ArrayList<String> arrayListMonHoc;
+    String thu;
+    String tkb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,20 +36,25 @@ public class ThirdActivity extends AppCompatActivity {
         editADD = (EditText) findViewById(R.id.addTextThird);
         listView = (ListView) findViewById(R.id.ListViewThird);
         arrayListMonHoc = new ArrayList<>();
-
         Intent intent = getIntent();
-        String thu  = intent.getStringExtra("thu");
-        String tkb = intent.getStringExtra("tkb");
+        thu  = intent.getStringExtra("thu");
+        tkb = intent.getStringExtra("tkb");
+
+
         textViewThu.setText(thu);
         ArrayAdapter adapter = new ArrayAdapter(ThirdActivity.this, android.R.layout.simple_list_item_1,arrayListMonHoc);
         listView.setAdapter(adapter);
+
+        GetDataMonHoc();
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String s = editADD.getText().toString();
-                arrayListMonHoc.add(s);
+                MainActivity.databaseMonHoc.QueryData("INSERT INTO MonHoc VALUES(null,'"+ tkb+"','"+thu+"','"+s+"')");
+                //arrayListMonHoc.add(s);
                 adapter.notifyDataSetChanged();
                 editADD.setText("");
+                GetDataMonHoc();
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,21 +78,22 @@ public class ThirdActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                ShowMenu(view,position);
+
+                ShowMenu(view,tkb,thu,arrayListMonHoc.get(position));
                 return false;
             }
         });
     }
-    private void ShowMenu(View view,int position){
+    private void ShowMenu(View view,String tentkb,String day,String mon){
         PopupMenu popupMenu = new PopupMenu(this,view);
         popupMenu.getMenuInflater().inflate(R.menu.menu_popup, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.menu_doiten: DoiTen(position);
+                    case R.id.menu_doiten: DoiTen(tentkb,day,mon);
                         break;
-                    case R.id.menu_xoa:Xoa(position);
+                    case R.id.menu_xoa:Xoa(tentkb,day,mon);
                         break;
                 }
                 return false;
@@ -91,17 +101,32 @@ public class ThirdActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
-    private void DoiTen(int position){
+    private void DoiTen(String tentkb, String day,String mon){
         editADD.setHint("Mời nhap tên cần đổi");
         editADD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                arrayListMonHoc.set(position,editADD.getText().toString());
+                MainActivity.databaseMonHoc.QueryData("UPDATE MonHoc SET tenmon = '"+editADD.getText().toString()+"' WHERE tenTKB= '"+ tentkb+"' && thu='"+day+"' && tenmon= '"+mon+"'");
+                Toast.makeText(ThirdActivity.this,"Da sua ten",Toast.LENGTH_SHORT).show();
+                GetDataMonHoc();
             }
         });
 
     }
-    private void Xoa(int position){
-        arrayListMonHoc.remove(position);
+    private void Xoa(String tentkb, String day,String mon){
+        MainActivity.databaseMonHoc.QueryData("DELETE FROM MonHoc WHERE tenTKB= '"+ tentkb+"' && thu='"+day+"' && tenmon= '"+mon+"'");
     }
+    private void GetDataMonHoc(){
+        Cursor cursor = MainActivity.databaseMonHoc.getData("SELECT * FROM MonHoc");
+        arrayListMonHoc.clear();
+        while (cursor.moveToNext()){
+            String tentkb = cursor.getString(1);
+            String day = cursor.getString(2);
+            String tenmon = cursor.getString(3);
+            if(tentkb.equals(tkb) && day.equals(thu))
+                arrayListMonHoc.add(tenmon);
+        }
+    }
+
 }
+

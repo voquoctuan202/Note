@@ -20,19 +20,6 @@ public class DatabaseMonHoc extends SQLiteOpenHelper {
         database.execSQL(str);
     }
 
-    public void InsertMonHoc(String tenTKB, String thu, String temmon){
-        SQLiteDatabase database = getReadableDatabase();
-        String sql = "INSERT INTO MonHoc VALUES(null,?,?,?)";
-        SQLiteStatement statement = database.compileStatement(sql);
-        statement.clearBindings();
-
-        statement.bindString(1,tenTKB);
-        statement.bindString(2,thu);
-        statement.bindString(3,temmon);
-
-        statement.executeInsert();
-    }
-
     public Cursor getData(String str){
         SQLiteDatabase database = getReadableDatabase();
         return database.rawQuery(str,null);

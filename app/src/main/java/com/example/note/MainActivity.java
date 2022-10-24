@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         databaseMonHoc.QueryData("CREATE TABLE IF NOT EXISTS MonHoc(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenTKB VARCHAR(50),thu VARCHAR(20),tenmon VARCHAR(50))");
 
         databaseHinhAnh = new DatabaseHinhAnh(this,"QuanliHinh,sqlite",null,1);
-        databaseHinhAnh.QueryData("CREATE TABLE IF NOT EXISTS HinhAnh(Id INTEGER PRIMARY KEY AUTOINCREMENT, ghichu VARCHAR(100), hinhanh BLOG)");
+        databaseHinhAnh.QueryData("CREATE TABLE IF NOT EXISTS HinhAnh(Id INTEGER PRIMARY KEY AUTOINCREMENT,tenmon VARCHAR(50), ghichu VARCHAR(100), hinhanh BLOG)");
 
 
         create.setOnClickListener(new View.OnClickListener() {
