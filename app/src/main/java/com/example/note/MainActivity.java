@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.MenuItem;
@@ -42,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
         databaseMonHoc = new DatabaseMonHoc(this,"QuanliMon.sqlite",null,1);
         databaseMonHoc.QueryData("CREATE TABLE IF NOT EXISTS MonHoc(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenTKB VARCHAR(50),thu VARCHAR(20),tenmon VARCHAR(50))");
 
-        databaseHinhAnh = new DatabaseHinhAnh(this,"QuanliHinh,sqlite",null,1);
-        databaseHinhAnh.QueryData("CREATE TABLE IF NOT EXISTS HinhAnh(Id INTEGER PRIMARY KEY AUTOINCREMENT,tenmon VARCHAR(50), ghichu VARCHAR(100), hinhanh BLOG)");
+        databaseHinhAnh = new DatabaseHinhAnh(this,"QuanliHinhAnh,sqlite",null,1);
+        databaseHinhAnh.QueryData("CREATE TABLE IF NOT EXISTS HINHANH(Id INTEGER PRIMARY KEY AUTOINCREMENT,tenmon VARCHAR(50),thoigian VARCHAR(50),ghichu VARCHAR(100), hinhanh BLOG)");
 
-
+        GetDataTKB();
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,5 +102,11 @@ public class MainActivity extends AppCompatActivity {
     private void Xoa(int position){
         arrayTKB.remove(position);
     }
-
+    private void GetDataTKB(){
+        Cursor cursor = MainActivity.databaseMonHoc.getData("SELECT * FROM MonHoc");
+        arrayTKB.clear();
+        while(cursor.moveToNext()){
+            arrayTKB.add(cursor.getString(1));
+        }
+    }
 }

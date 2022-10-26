@@ -18,14 +18,16 @@ public class DatabaseHinhAnh extends SQLiteOpenHelper {
         database.execSQL(str);
     }
 
-    public void insertDoVat(String mota, byte[] hinhanh ){
+    public void insertHinhAnh(String tenmon,String ngaychup,String mota, byte[] hinhanh ){
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO DoVat VALUES(null,?,?) ";
+        String sql = "INSERT INTO HINHANH VALUES(null,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
 
-        statement.bindString(1,mota);
-        statement.bindBlob(1,hinhanh);
+        statement.bindString(1,tenmon);
+        statement.bindString(2,ngaychup);
+        statement.bindString(3,mota);
+        statement.bindBlob(4,hinhanh);
 
         statement.executeInsert();
     }

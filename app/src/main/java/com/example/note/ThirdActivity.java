@@ -116,17 +116,17 @@ public class ThirdActivity extends AppCompatActivity {
     private void Xoa(String tentkb, String day,String mon){
         MainActivity.databaseMonHoc.QueryData("DELETE FROM MonHoc WHERE tenTKB= '"+ tentkb+"' && thu='"+day+"' && tenmon= '"+mon+"'");
     }
-    private void GetDataMonHoc(){
+    private void GetDataMonHoc() {
         Cursor cursor = MainActivity.databaseMonHoc.getData("SELECT * FROM MonHoc");
         arrayListMonHoc.clear();
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             String tentkb = cursor.getString(1);
             String day = cursor.getString(2);
             String tenmon = cursor.getString(3);
-            if(tentkb.equals(tkb) && day.equals(thu))
+            if (tentkb.equals(tkb) && day.equals(thu)) {
                 arrayListMonHoc.add(tenmon);
+            }
         }
     }
-
 }
 

@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,6 +37,8 @@ public class FourActivity extends AppCompatActivity {
     ArrayList<HinhAnh> arrayHinhanh ;
     int REQUEST_CODE_CAMERA = 123;
     ListView listView;
+    String tkb,thu,tenmon;
+    AdapterHinhAnh adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +52,13 @@ public class FourActivity extends AppCompatActivity {
         editMon = (EditText) findViewById(R.id.EditTextChiTiet);
         arrayHinhanh = new ArrayList<>();
 
-        AdapterHinhAnh adapter = new AdapterHinhAnh(FourActivity.this, R.layout.hinh_anh,arrayHinhanh);
+        adapter = new AdapterHinhAnh(FourActivity.this, R.layout.hinh_anh,arrayHinhanh);
         listView.setAdapter(adapter);
         MonHoc monHoc = new MonHoc();
         Intent intent =getIntent();
-        String tkb = intent.getStringExtra("tkb");
-        String thu = intent.getStringExtra("thu");
-        String tenmon = intent.getStringExtra("tenmon");
+        tkb = intent.getStringExtra("tkb");
+        thu = intent.getStringExtra("thu");
+        tenmon = intent.getStringExtra("tenmon");
         ADD_MON(monHoc,tkb,thu,tenmon);
 
         GhiChu.setText(tkb+ "\n" +thu +"\n"+ tenmon);
@@ -69,6 +72,7 @@ public class FourActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+        GetDataHinhAnh();
         addHINH_ANH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +117,8 @@ public class FourActivity extends AppCompatActivity {
             ByteArrayOutputStream byteArray = new ByteArrayOutputStream(); // khoi tao bien byteArray de luu anh keu byte[]
             bitmap.compress(Bitmap.CompressFormat.PNG,100 /*so cang nho cang chat luong*/,byteArray); // chuyen doi kieu tu bitmap sang kieu byte[] dong thoi gan cho byteArray
             byte[] hinhanh = byteArray.toByteArray(); //chuyen du lieu sang file hinh anh
-            arrayHinhanh.add(new HinhAnh(" ",DayNow(), hinhanh));
+            MainActivity.databaseHinhAnh.insertHinhAnh(tenmon,DayNow(),"",hinhanh);
+            GetDataHinhAnh();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -152,5 +157,20 @@ public class FourActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+    void GetDataHinhAnh(){
+        Cursor cursor = MainActivity.databaseHinhAnh.getData("SELECT * FROM HinhAnh");
+        arrayHinhanh.clear();
+        while(cursor.moveToNext()){
+            String mon = cursor.getString(1);
+            if(mon.equals(tenmon)){
+                arrayHinhanh.add(new HinhAnh(
+                   cursor.getString(3),
+                   cursor.getString(2),
+                   cursor.getBlob(4)
+                ));
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 }
