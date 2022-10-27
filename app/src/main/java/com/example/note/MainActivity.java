@@ -3,6 +3,7 @@ package com.example.note;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     EditText addTkb;
     Button create;
     TextView textView;
+    ArrayAdapter adapterTKB;
     public static DatabaseMonHoc databaseMonHoc;
     public static DatabaseHinhAnh databaseHinhAnh;
     @Override
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         addTkb = (EditText) findViewById(R.id.editTextTKB);
         create = (Button) findViewById(R.id.button_createTKB);
         arrayTKB.add("Học kì 1 - Năm 1");
-        ArrayAdapter adapterTKB= new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1,arrayTKB);
+        adapterTKB= new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1,arrayTKB);
         tkb.setAdapter(adapterTKB);
         databaseMonHoc = new DatabaseMonHoc(this,"QuanliMon.sqlite",null,1);
         databaseMonHoc.QueryData("CREATE TABLE IF NOT EXISTS MonHoc(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenTKB VARCHAR(50),thu VARCHAR(20),tenmon VARCHAR(50))");
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         databaseHinhAnh = new DatabaseHinhAnh(this,"QuanliHinhAnh,sqlite",null,1);
         databaseHinhAnh.QueryData("CREATE TABLE IF NOT EXISTS HINHANH(Id INTEGER PRIMARY KEY AUTOINCREMENT,tenmon VARCHAR(50),thoigian VARCHAR(50),ghichu VARCHAR(100), hinhanh BLOG)");
 
-        GetDataTKB();
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,8 +56,10 @@ public class MainActivity extends AppCompatActivity {
                 arrayTKB.add(s);
                 adapterTKB.notifyDataSetChanged();
                 addTkb.setText("");
+
             }
         });
+        GetDataTKB();
         tkb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,24 +93,63 @@ public class MainActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
-    private void DoiTen(int position){
-        addTkb.setHint("Mời nhap tên cần đổi");
-        addTkb.setOnClickListener(new View.OnClickListener() {
+    private void DiaLogSuaTen(String tentkb){
+        Dialog dialog =  new Dialog(this);
+        dialog.setContentView(R.layout.chi_tiet);
+
+        TextView tieude = (TextView) dialog.findViewById(R.id.textTieudeDialog);
+        EditText noidung = (EditText) dialog.findViewById(R.id.editDialogChiTiet);
+        Button xacnhan = (Button) dialog.findViewById(R.id.buttonAcp);
+        Button huy = (Button) dialog.findViewById(R.id.buttonDialogCancel);
+
+        tieude.setText("ĐỔI TÊN THỜI KHÓA BIỂU");
+        xacnhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                arrayTKB.set(position,addTkb.getText().toString());
+                String s = noidung.getText().toString();
+                Cursor cursor = MainActivity.databaseMonHoc.getData("SELECT * FROM MonHoc");
+                while(cursor.moveToNext()){
+                   MainActivity.databaseMonHoc.QueryData("UPDATE MonHoc SET TenTKB ='"+s+"' WHERE TenTKB = '"+tentkb+"'");
+                }
+                GetDataTKB();
+                dialog.dismiss();
             }
         });
+        huy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
+    private void DoiTen(int position){
+        DiaLogSuaTen(arrayTKB.set(position,addTkb.getText().toString()));
+    }
     private void Xoa(int position){
-        arrayTKB.remove(position);
+        Cursor cursor = MainActivity.databaseMonHoc.getData("SELECT * FROM MonHoc");
+        while(cursor.moveToNext()){
+            MainActivity.databaseMonHoc.QueryData("DELETE FROM MonHoc WHERE TenTKB ='"+arrayTKB.get(position)+"' ");
+        }
+        GetDataTKB();
+
     }
     private void GetDataTKB(){
         Cursor cursor = MainActivity.databaseMonHoc.getData("SELECT * FROM MonHoc");
         arrayTKB.clear();
         while(cursor.moveToNext()){
-            arrayTKB.add(cursor.getString(1));
+            String s= cursor.getString(1);
+            addArrayString(arrayTKB,s);
         }
+        adapterTKB.notifyDataSetChanged();
+    }
+    private void addArrayString(ArrayList<String> arrayList,String s){
+        int k=0;
+        for(int i=0;i< arrayList.size();i++){
+            if(arrayList.get(i).equals(s))
+                k=1;
+        }
+        if(k==0) arrayList.add(s);
     }
 }

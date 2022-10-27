@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,11 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class FourActivity extends AppCompatActivity {
     Button back, add, addHINH_ANH;
@@ -136,9 +132,9 @@ public class FourActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);// khong cho hien title
         dialog.setContentView(R.layout.chi_tiet);
 
-        Button buttonAcp = (Button) dialog.findViewById(R.id.buttonDialogAcp);
+        Button buttonCancel = (Button) dialog.findViewById(R.id.buttonDialogCancel);
         EditText editText = (EditText) dialog.findViewById(R.id.editDialogChiTiet);
-        Button buttonChose = (Button) dialog.findViewById(R.id.buttonChose);
+        Button buttonChose = (Button) dialog.findViewById(R.id.buttonAcp);
 
         buttonChose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +146,7 @@ public class FourActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-        buttonAcp.setOnClickListener(new View.OnClickListener() {
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.cancel();
