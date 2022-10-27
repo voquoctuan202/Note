@@ -7,11 +7,13 @@
 
     <TextView
         android:id="@+id/textTieudeDialog"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="34dp"
         android:layout_marginTop="20dp"
         android:text="Chi Tiết"
-        android:textSize="25sp"
+        android:textAlignment="center"
+        android:textColor="#FF0000"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.463"
@@ -21,25 +23,25 @@
 
     <EditText
         android:id="@+id/editDialogChiTiet"
-        android:layout_width="219dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="277dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Nhap ghi chu"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTieudeDialog"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonDialogCancel"
-        android:layout_width="77dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:text="Cancel"
         android:textSize="8sp"
@@ -47,22 +49,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/buttonAcp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.011" />
+        app:layout_constraintTop_toBottomOf="@+id/editDialogChiTiet"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonAcp"
-        android:layout_width="92dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="160dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:text="Xac nhan"
         android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.254"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.011" />
+        app:layout_constraintTop_toBottomOf="@+id/editDialogChiTiet"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

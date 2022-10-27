@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
         Button xacnhan = (Button) dialog.findViewById(R.id.buttonAcp);
         Button huy = (Button) dialog.findViewById(R.id.buttonDialogCancel);
 
-        tieude.setText("ĐỔI TÊN THỜI KHÓA BIỂU");
+        noidung.setHint("Nhập tên cần đổi");
+        tieude.setText("ĐỔI TÊN ");
         xacnhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
